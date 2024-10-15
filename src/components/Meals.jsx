@@ -13,8 +13,12 @@ function Meals() {
         const response = await fetch("http://localhost:3000/meals");
         const meals = await response.json();
         setAvailableMeals(meals);
+
+        if (!response.ok) {
+          throw new Error("Can't fetch menu items at the moment");          
+        }
       } catch (error) {
-        console.log(error);
+        console.log(error.message);
       }
     }
 
