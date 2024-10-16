@@ -1,10 +1,15 @@
 import logo from "../assets/logo.jpg";
-import CartModal from "./CartModal";
+import Modal from "./Modal";
+import Cart from "./Cart";
+import CheckoutForm from "./CheckoutForm";
 
 function Header() {
   return (
     <>
-      <CartModal />
+      <Modal>
+        <Cart />
+        {/* <CheckoutForm /> */}
+      </Modal>
       <header id="main-header">
         <div id="title">
           <img src={logo} alt="logo" />

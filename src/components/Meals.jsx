@@ -32,6 +32,7 @@ function Meals() {
         return (
           <MealItem
             key={meal.id}
+            id={meal.id}
             image={meal.image}
             title={meal.name}
             price={meal.price}

@@ -1,4 +1,9 @@
-function MealItem({ image, title, price, description }) {
+import { useContext } from "react";
+import { CartContext } from "../store/cart-context";
+
+function MealItem({ id, image, title, price, description }) {
+  const { addToCart } = useContext(CartContext);
+
   return (
     <li className="meal-item">
       <article>
@@ -9,7 +14,12 @@ function MealItem({ image, title, price, description }) {
         </div>
         <p className="meal-item-description">{description}</p>
         <div className="meal-item-actions">
-          <button className="button">Add to Cart</button>
+          <button
+            className="button"
+            onClick={() => addToCart({ id: id, name: title, price: price })}
+          >
+            Add to Cart
+          </button>
         </div>
       </article>
     </li>
