@@ -1,4 +1,5 @@
 import InputField from "./InputField";
+import Button from "./button";
 
 function CheckoutForm() {
   return (
@@ -14,8 +15,8 @@ function CheckoutForm() {
           <InputField title="City" id="city" type="text" name="city" />
         </div>
         <div className="modal-actions">
-          <button className="text-button">Close</button>
-          <button className="button">Submit Order</button>
+          <Button buttonStyle="text-button" title="Close" />
+          <Button buttonStyle="button" title="Submit Order" />
         </div>
       </form>
     </div>

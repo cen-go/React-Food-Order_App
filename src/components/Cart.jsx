@@ -1,8 +1,13 @@
 import { useContext } from "react";
 import { CartContext } from "../store/cart-context";
+import Button from "./button";
+import { currenceFormatter } from "../util/formatting";
 
 function Cart() {
-  const {cartItems} = useContext(CartContext);
+  const {cartItems, updateAmount} = useContext(CartContext);
+  const totalPrice = cartItems
+    .reduce((acc, cartItem) => (acc += cartItem.price * cartItem.quantity), 0)
+    .toFixed(2);
 
   return (
     <div className="cart">
@@ -12,11 +17,11 @@ function Cart() {
         {cartItems.map((item) => {
           return (
             <li key={item.id} className="cart-item">
-              <p>{item.name} - {item.quantity} x ${item.price}</p>
+              <p>{item.name} - {item.quantity} x {currenceFormatter.format(item.price)}</p>
               <div className="cart-item-actions">
-                <button>-</button>
+                <button onClick={() => updateAmount(item.id, -1)}>-</button>
                 <p>{item.quantity}</p>
-                <button>+</button>
+                <button onClick={() => updateAmount(item.id, 1)}>+</button>
               </div>
             </li>
           );
@@ -24,12 +29,12 @@ function Cart() {
       </ul>
 
       <div className="cart-total">
-        <p>$99.99</p>
+        <p>{currenceFormatter.format(totalPrice)}</p>
       </div>
 
       <div className="modal-actions">
-        <button className="text-button">Close</button>
-        <button className="button">Go to Checkout</button>
+        <Button buttonStyle="text-button" title="Close" />
+        <Button buttonStyle="button" title="Go to Checkout" />
       </div>
     </div>
   );

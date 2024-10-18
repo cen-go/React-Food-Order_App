@@ -3,20 +3,51 @@ import { createContext, useReducer } from "react";
 export const CartContext = createContext({
   cartItems: [],
   addToCart: () => {},
+  updateAmount: () => {},
 });
 
 function shoppingCartReducer(state, action) {
   if (action.type === "ADD_TO_CART") {
-    const updatedCartItems = [...state.items, {
-      id: action.payload.id,
-      name: action.payload.name,
-      price: action.payload.price,
-      quantity: 1,
-    }];
+    const updatedCartItems = [...state.items];
+    const existingItemIndex = updatedCartItems.findIndex(
+      (item) => item.id === action.payload.id
+    );
+    const existingItem = updatedCartItems[existingItemIndex];
+
+    if (existingItem) {
+      const updatedItem = {
+        ...existingItem,
+        quantity: existingItem.quantity + 1,
+      };
+      updatedCartItems[existingItemIndex] = updatedItem;
+    } else {
+      updatedCartItems.push({
+        id: action.payload.id,
+        name: action.payload.name,
+        price: action.payload.price,
+        quantity: 1,
+      });
+    }
     return {
       items: updatedCartItems,
-    }
+    };
+  }
 
+  if (action.type === "UPDATE_AMOUNT") {
+    const updatedCartItems = [...state.items];
+    const itemToUpdateIndex = updatedCartItems.findIndex(
+      (item) => item.id === action.payload.id
+    );
+    const itemToUpdate = updatedCartItems[itemToUpdateIndex];
+    itemToUpdate.quantity += action.payload.amount;
+    console.log("adding");
+
+    if (itemToUpdate.quantity <= 0) {
+      updatedCartItems.splice(itemToUpdateIndex, 1);
+    }
+    return {
+      items: updatedCartItems,
+    };
   }
 }
 
@@ -31,9 +62,14 @@ function CartContextProvider({ children }) {
     ShoppingCartDispatch({ type: "ADD_TO_CART", payload: meal});
   }
 
+  function handleUpdateAmount(id, amount) {
+    ShoppingCartDispatch({type: "UPDATE_AMOUNT", payload: {id, amount,}})
+  }
+
   const contextValue = {
     cartItems: shoppingCartState.items,
     addToCart: handleAddToCart,
+    updateAmount: handleUpdateAmount,
   }
 
   return (
