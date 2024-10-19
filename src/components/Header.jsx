@@ -5,17 +5,20 @@ import Modal from "./Modal";
 import Cart from "./Cart";
 import CheckoutForm from "./CheckoutForm";
 import { CartContext } from "../store/cart-context";
+import UserProgressContext from "../store/UserProgressContext";
 import Button from "./button";
 
 function Header() {
+  const { progress, showCart} = useContext(UserProgressContext);
+
   const { cartItems } = useContext(CartContext);
   const cartQuantity = cartItems.reduce((acc, cartItem) => acc += cartItem.quantity, 0);
 
-  return (
+    return (
     <>
-      <Modal>
-        <Cart />
-        {/* <CheckoutForm /> */}
+      <Modal open={progress}>
+        {progress === "cart" && <Cart/>}
+        {progress === "checkout" && <CheckoutForm />}
       </Modal>
       <header id="main-header">
         <div id="title">
@@ -23,7 +26,7 @@ function Header() {
           <h1>REACTFOOD</h1>
         </div>
         <nav>
-          <Button buttonStyle="text-button" title={`Cart (${cartQuantity})`} />
+          <Button onClick={showCart} buttonStyle="text-button" title={`Cart (${cartQuantity})`} />
         </nav>
       </header>
     </>

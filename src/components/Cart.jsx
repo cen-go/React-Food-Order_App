@@ -2,8 +2,12 @@ import { useContext } from "react";
 import { CartContext } from "../store/cart-context";
 import Button from "./button";
 import { currencyFormatter } from "../util/formatting";
+import UserProgressContext from "../store/UserProgressContext";
+
 
 function Cart() {
+  const {hideCart, showCheckout} = useContext(UserProgressContext);
+
   const {cartItems, updateAmount} = useContext(CartContext);
   const totalPrice = cartItems
     .reduce((acc, cartItem) => (acc += cartItem.price * cartItem.quantity), 0)
@@ -33,8 +37,8 @@ function Cart() {
       </div>
 
       <div className="modal-actions">
-        <Button buttonStyle="text-button" title="Close" />
-        <Button buttonStyle="button" title="Go to Checkout" />
+        <Button buttonStyle="text-button" title="Close" onClick={hideCart} />
+        <Button buttonStyle="button" title="Go to Checkout" onClick={showCheckout} />
       </div>
     </div>
   );
