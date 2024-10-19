@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import { CartContext } from "../store/cart-context";
 import Button from "./button";
-import { currenceFormatter } from "../util/formatting";
+import { currencyFormatter } from "../util/formatting";
 
 function Cart() {
   const {cartItems, updateAmount} = useContext(CartContext);
@@ -17,7 +17,7 @@ function Cart() {
         {cartItems.map((item) => {
           return (
             <li key={item.id} className="cart-item">
-              <p>{item.name} - {item.quantity} x {currenceFormatter.format(item.price)}</p>
+              <p>{item.name} - {item.quantity} x {currencyFormatter.format(item.price)}</p>
               <div className="cart-item-actions">
                 <button onClick={() => updateAmount(item.id, -1)}>-</button>
                 <p>{item.quantity}</p>
@@ -29,7 +29,7 @@ function Cart() {
       </ul>
 
       <div className="cart-total">
-        <p>{currenceFormatter.format(totalPrice)}</p>
+        <p>{currencyFormatter.format(totalPrice)}</p>
       </div>
 
       <div className="modal-actions">

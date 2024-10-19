@@ -29,6 +29,7 @@ function shoppingCartReducer(state, action) {
       });
     }
     return {
+      ...state,
       items: updatedCartItems,
     };
   }
@@ -39,13 +40,17 @@ function shoppingCartReducer(state, action) {
       (item) => item.id === action.payload.id
     );
     const itemToUpdate = updatedCartItems[itemToUpdateIndex];
-    itemToUpdate.quantity += action.payload.amount;
-    console.log("adding");
+    const updatedItem = {
+      ...itemToUpdate,
+      quantity: itemToUpdate.quantity + action.payload.amount,
+    };
+    updatedCartItems[itemToUpdateIndex] = updatedItem;
 
-    if (itemToUpdate.quantity <= 0) {
+    if (updatedItem.quantity <= 0) {
       updatedCartItems.splice(itemToUpdateIndex, 1);
     }
     return {
+      ...state,
       items: updatedCartItems,
     };
   }
