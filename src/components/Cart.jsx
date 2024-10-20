@@ -4,11 +4,10 @@ import Button from "./button";
 import { currencyFormatter } from "../util/formatting";
 import UserProgressContext from "../store/UserProgressContext";
 
-
 function Cart() {
-  const {hideCart, showCheckout} = useContext(UserProgressContext);
+  const { hideCart, showCheckout } = useContext(UserProgressContext);
 
-  const {cartItems, updateAmount} = useContext(CartContext);
+  const { cartItems, updateAmount } = useContext(CartContext);
   const totalPrice = cartItems
     .reduce((acc, cartItem) => (acc += cartItem.price * cartItem.quantity), 0)
     .toFixed(2);
@@ -21,7 +20,10 @@ function Cart() {
         {cartItems.map((item) => {
           return (
             <li key={item.id} className="cart-item">
-              <p>{item.name} - {item.quantity} x {currencyFormatter.format(item.price)}</p>
+              <p>
+                {item.name} - {item.quantity} x{" "}
+                {currencyFormatter.format(item.price)}
+              </p>
               <div className="cart-item-actions">
                 <button onClick={() => updateAmount(item.id, -1)}>-</button>
                 <p>{item.quantity}</p>
@@ -38,7 +40,12 @@ function Cart() {
 
       <div className="modal-actions">
         <Button buttonStyle="text-button" title="Close" onClick={hideCart} />
-        <Button buttonStyle="button" title="Go to Checkout" onClick={showCheckout} />
+        <Button
+          buttonStyle="button"
+          title="Go to Checkout"
+          onClick={showCheckout}
+          disabled={cartItems.length < 1 ? true : false}
+        />
       </div>
     </div>
   );
