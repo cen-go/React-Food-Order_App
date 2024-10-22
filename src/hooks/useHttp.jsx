@@ -1,14 +1,45 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 
-function useHttp() {
+async function sendHttpRequest(url, config) {
+  const response = await fetch(url, config);
+  const resData = await response.json();
+  if (!response.ok) {
+    throw new Error(resData.message || "Failed to send request");
+  }
+  return resData;
+}
+
+function useHttp(url, config, initialData) {
   const [isFetching, setIsFetching] = useState(false);
-  const [data, setData] = useState([]);
-  const [error, setError] = useState(null);
+  const [data, setData] = useState(initialData);
+  const [error, setError] = useState();
+
+  const sendRequest = useCallback(
+    async function sendRequest() {
+      setIsFetching(true);
+      try {
+        const resData = await sendHttpRequest(url, config);
+        setData(resData);
+      } catch (error) {
+        setError(error.message || "Something went wrong");
+      }
+      setIsFetching(false);
+    },
+    [url, config]
+  );
 
   useEffect(() => {
-    setIsFetching(true);
-    
-  }, []);
+    if ((config && (config.method === "GET" || !config.method)) || !config) {
+      sendRequest();
+    }
+  }, [sendRequest, config]);
+
+  return {
+    isFetching,
+    data,
+    error,
+    sendRequest,
+  };
 }
 
 export default useHttp;
