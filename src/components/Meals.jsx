@@ -1,4 +1,6 @@
 import MealItem from "./MealItem";
+import Error from "./Error";
+
 import useHttp from "../hooks/useHttp";
 
 const requestConfig = {};
@@ -18,8 +20,12 @@ function Meals() {
     );
   }
 
+  if (error) {
+    return <Error title="Failed to load meals!" message={error} />
+  }
+
   return (
-    <ul id="meals">
+    <ul id="meals">      
       {availableMeals.map((meal) => {
         return (
           <MealItem

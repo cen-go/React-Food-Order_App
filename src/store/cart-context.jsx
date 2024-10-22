@@ -4,6 +4,7 @@ export const CartContext = createContext({
   cartItems: [],
   addToCart: () => {},
   updateAmount: () => {},
+  resetCart: () => {},
 });
 
 function shoppingCartReducer(state, action) {
@@ -54,6 +55,13 @@ function shoppingCartReducer(state, action) {
       items: updatedCartItems,
     };
   }
+
+  if (action.type === "RESET_CART") {
+    return {
+      ...state,
+      items: [],
+    };
+  }
 }
 
 function CartContextProvider({ children }) {
@@ -71,10 +79,15 @@ function CartContextProvider({ children }) {
     ShoppingCartDispatch({type: "UPDATE_AMOUNT", payload: {id, amount,}})
   }
 
+  function handleResetCart() {
+    ShoppingCartDispatch({ type: "RESET_CART" })
+  }
+
   const contextValue = {
     cartItems: shoppingCartState.items,
     addToCart: handleAddToCart,
     updateAmount: handleUpdateAmount,
+    resetCart: handleResetCart,
   }
 
   return (

@@ -23,7 +23,7 @@ export function UserProgressContextProvider({ children }) {
   function handleHideCheckout() {
     setProgressState("");
   }
-
+  
   const contextValue = {
     progress: progressState,
     showCart: handleShowCart,
