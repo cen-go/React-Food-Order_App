@@ -17,9 +17,28 @@ function CheckoutForm() {
   function handleSubmit(event) {
     event.preventDefault();
     const formData = new FormData(event.target);
-    const oreder = Object.fromEntries(formData.entries());
-    order.meals = cartItems;
-    console.log(order);
+    const customerData = Object.fromEntries(formData.entries());
+    const orderData = {
+      customer: customerData,
+      items: cartItems,
+    };
+    console.log(orderData);
+
+    async function sendOrderData(data) {
+      try {
+        const response = await fetch("http://localhost:3000/orders", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({order: data}),
+        });
+        const resData = await response.json();
+        console.log(resData.message);        
+      } catch (error) {
+        console.log(error.message);            
+      }
+    }
+
+    sendOrderData(orderData);
   }
 
   return (
@@ -31,7 +50,7 @@ function CheckoutForm() {
           title="Full Name"
           id="full-name"
           type="text"
-          name="fullName"
+          name="name"
           required
         />
         <InputField
@@ -53,7 +72,7 @@ function CheckoutForm() {
             title="Postal Code"
             id="postal-code"
             type="text"
-            name="postalCode"
+            name="postal-code"
             required
           />
           <InputField title="City" id="city" type="text" name="city" required />
