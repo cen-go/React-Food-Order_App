@@ -1,7 +1,6 @@
 import { useContext } from "react";
 
 import logoImg from "../assets/logo.jpg";
-import Modal from "./Modal";
 import Cart from "./Cart";
 import CheckoutForm from "./CheckoutForm";
 import { CartContext } from "../store/cart-context";
@@ -15,22 +14,25 @@ function Header() {
   const cartQuantity = cartItems.reduce((acc, cartItem) => acc += cartItem.quantity, 0);
 
     return (
-    <>
-      <Modal open={progress}>
-        {progress === "cart" && <Cart/>}
+      <>
+        {progress === "cart" && <Cart />}
         {progress === "checkout" && <CheckoutForm />}
-      </Modal>
-      <header id="main-header">
-        <div id="title">
-          <img src={logoImg} alt="logo" />
-          <h1>REACTFOOD</h1>
-        </div>
-        <nav>
-          <Button onClick={showCart} buttonStyle="text-button" title={`Cart (${cartQuantity})`} />
-        </nav>
-      </header>
-    </>
-  );
+
+        <header id="main-header">
+          <div id="title">
+            <img src={logoImg} alt="logo" />
+            <h1>REACTFOOD</h1>
+          </div>
+          <nav>
+            <Button
+              onClick={showCart}
+              buttonStyle="text-button"
+              title={`Cart (${cartQuantity})`}
+            />
+          </nav>
+        </header>
+      </>
+    );
 }
 
 export default Header;

@@ -1,12 +1,10 @@
 import { createPortal } from "react-dom";
-import { useEffect, useRef, useContext } from "react";
-import UserProgressContext from "../store/UserProgressContext";
+import { useEffect, useRef } from "react";
 
-function Modal({ children, open, className = "" }) {
-  const {hideCart} = useContext(UserProgressContext);
+function Modal({ children, open, className = "", ...props }) {
   const dialogRef = useRef();
 
-  useEffect(() => {
+  useEffect(() => {    
     const modal = dialogRef.current;
     if (open) {
       modal.showModal();
@@ -16,7 +14,7 @@ function Modal({ children, open, className = "" }) {
   }, [open]);
 
   return createPortal(
-    <dialog ref={dialogRef} className={`modal ${className}`} onClose={hideCart} >
+    <dialog ref={dialogRef} className={`modal ${className}`} {...props} >
       {children}
     </dialog>,
     document.getElementById("modal")
